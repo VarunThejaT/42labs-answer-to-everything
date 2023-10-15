@@ -48,17 +48,17 @@ JSON
     return prompt
 
 def make_transcription_prompt(video_summary, topic, subtopic, length="1", level_of_detail="expert"):
-    prompt = f"""
-        You are assigned as to write for a mini {length} minute podcast episode on {topic}. Follow the following steps:
-        1. Read the video summaries below that explore {topic}
-        2. Pay special attention to portions related to {subtopic}
-        3. Write the dialogue for a {length} podcast episode that covers this material and generate it at an appropriate level of detail for a {level_of_detail} in the transcript.
-        4. include necessary details or extensions, but only if useful for a {level_of_detail}
-        5. respond with the dialogue for the podcast episode
-
-        Video summaries:
-        {video_summary}
-    """
+    prompt = "below is the summary of all the content in a video related to "
+    prompt+=topic 
+    prompt+="\n based on this content, provide a transcription for a "
+    prompt+=length
+    prompt+=" that covers this material"
+    prompt+=" and generate it at an appropriate level of detail for a "
+    prompt+=level_of_detail
+    prompt+=" in the transcript. "
+    prompt+="\n\n"
+    prompt+=video_summary
+    prompt+=""
     return prompt
 
 def generate_transcription(video_summary, topic, length="1", level_of_detail="beginner", model="gpt-4-0314"):
