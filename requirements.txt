@@ -3,3 +3,4 @@ python-dotenv
 elevenlabs
 openai
 deep-translator
+boto3
