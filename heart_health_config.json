@@ -1,0 +1,25 @@
+{
+    "data": {
+        "heart_health": {
+            "sub_topics": [
+                "Anatomy and Physiology",
+                "Heart Diseases",
+                "Risk Factors",
+                "Exercise and physical activity"
+                "Healthy diet and nutrition",
+                "Cardiac tests and imaging",
+                "Surgical and non-surgical interventions"
+            ],
+            "selected_sub_topics": [
+                "Anatomy and Physiology",
+                "Risk Factors",
+                "Exercise and physical activity"
+                "Cardiac tests and imaging",
+            ],
+            "index_id": "652b52223c4a426cf3f4f9b7",
+            "topic_name": "leadership",
+            "skill_level": "expert",
+            "language_preferences": "ko"
+        }
+    }
+}
