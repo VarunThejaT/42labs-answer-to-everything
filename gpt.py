@@ -1,6 +1,9 @@
 import os
 import openai
 import argparse
+import dotenv
+dotenv.load_dotenv()
+
 # openai.organization = "org-5hbFMeJaQuatIgOn4ilTaMwN"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.Model.list()
@@ -44,18 +47,14 @@ JSON
 """
     return prompt
 
-def make_transcription_prompt(video_summary, topic, name="David", length="1", level_of_detail="expert"):
+def make_transcription_prompt(video_summary, topic, length="1", level_of_detail="expert"):
     prompt = "below is the summary of all the content in a video related to "
     prompt+=topic 
     prompt+="\n based on this content, provide a transcription for a "
     prompt+=length
-    prompt+=" minute personal podcast episode for "
-    prompt+=name
     prompt+=" that covers this material"
     prompt+=" and generate it at an appropriate level of detail for a "
     prompt+=level_of_detail
-    prompt+=". make sure to include the name "
-    prompt+=name
     prompt+=" in the transcript. "
     prompt+="\n\n"
     prompt+=video_summary
@@ -103,10 +102,10 @@ if __name__ == "__main__":
     summary_file = args.summary_file
     summary = open(summary_file, "r").read()
 
-    # classes_json = generate_classes(topic, number_of_categories, model)
+    classes_json = generate_classes(topic, number_of_categories, model)
 
-    # print(classes_json)
+    print(classes_json)
 
-    transcript = generate_transcription(summary, topic, model=model)
+    # transcript = generate_transcription(summary, topic, model=model)
 
-    print(transcript)
+    # print(transcript)

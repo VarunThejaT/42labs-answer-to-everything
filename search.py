@@ -7,13 +7,7 @@ dotenv.load_dotenv()
 
 url = "https://api.twelvelabs.io/v1.1"
 API_KEY = os.getenv("TWELVE_LABS_API_KEY")
-
-user_input = {
-    "topic" : "leadership",
-    "skill" : "beginner"
-}
-
-skills = ["beginner", "intermediate", "advanced"]
+# skills = ["beginner", "intermediate", "advanced"]
 
 def get_subtopics(topic):
     with open('config.json', 'r') as f:
@@ -52,17 +46,21 @@ def get_12_summary(topic_payload):
 
 def classify_videos(index_id):
     CLASSIFY_BULK_URL = f"{url}/classify/bulk"
-
-    data =  {
-    "options": ["conversation", "text_in_video"],
-    "index_id": index_id,
-    "classes": [
-        {
+    with open('test.json', 'r') as f:
+        test_data = json.load(f)
+    test_data = test_data["classes"][0]
+    new_test_data =         {
         "name": "leadership",
         "prompts": [
             "leadership",
         ]
-        }
+    }
+    print(test_data, new_test_data)
+    data =  {
+    "options": ["conversation", "text_in_video"],
+    "index_id": index_id,
+    "classes": [
+        test_data
     ]
     }
     headers = {
