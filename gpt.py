@@ -44,24 +44,18 @@ JSON
 """
     return prompt
 
-def main(args):
+def generate_classes(topic, number_of_categories="4", model="gpt-4-0314"):
 
-    TOPIC = args.topic
-    NUMBER_OF_CATEGORIES = args.number_of_categories
-    MODEL = args.model
-
-    prompt = make_prompt(TOPIC, NUMBER_OF_CATEGORIES)
-
-    print(prompt)
+    prompt = make_prompt(topic, number_of_categories)
 
     response = openai.ChatCompletion.create(
-        model=MODEL,
+        model=model,
         messages=[{"role": "user", "content": prompt}],
     )
 
     response_json = response["choices"][0]["message"]["content"]
 
-    print(response_json)
+    return(response_json)
 
 # call open ai api and get completion for the following prompt
 if __name__ == "__main__":
@@ -71,4 +65,8 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str, default="gpt-4-0314", help="model")
     args = parser.parse_args()
 
-    main(args)
+    topic = args.topic
+    number_of_categories = args.number_of_categories
+    model = args.model
+
+    generate_classes(topic, number_of_categories, model)
