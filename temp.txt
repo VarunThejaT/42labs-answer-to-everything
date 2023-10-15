@@ -1,6 +1,22 @@
 {
-  "code": "parameter_invalid",
-  "message": "Request contains some invalid parameters. json: 
-  cannot unmarshal number into Go struct field CreateClassifyBulkRequest.threshold of type 
-  schema.ClassifyThreshold"
+  "_id": "652af12743e8c47e4eb48056",
+  "created_at": "2023-10-14T19:51:03Z",
+  "indexed_at": "2023-10-14T20:46:54Z",
+  "metadata": {
+    "duration": 834.041533,
+    "filename": "2016-tim-urban-002-5000k.mp4",
+    "fps": 23.97602389617176,
+    "height": 1080,
+    "size": 382310034,
+    "video_title": "2016-tim-urban-002-5000k.mp4",
+    "width": 1920
+  },
+  "hls": {
+    "video_url": "https://deuqpmn4rs7j5.cloudfront.net/652ae41c76514eca0b5dea74/652af1263c4a426cf3f4f52a/stream/e52e232e-6566-40ab-a0fd-b530c1fca88d.m3u8",
+    "thumbnail_urls": [
+      "https://deuqpmn4rs7j5.cloudfront.net/652ae41c76514eca0b5dea74/652af1263c4a426cf3f4f52a/thumbnails/e52e232e-6566-40ab-a0fd-b530c1fca88d.0000001.jpg"
+    ],
+    "status": "COMPLETE",
+    "updated_at": "2023-10-14T19:55:17.15Z"
+  }
 }

@@ -2,7 +2,6 @@ import requests
 import json
 import dotenv
 import os
-import pprint
 
 dotenv.load_dotenv()
 
