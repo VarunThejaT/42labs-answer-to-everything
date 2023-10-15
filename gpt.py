@@ -6,7 +6,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.Model.list()
 
 
-def make_prompt(topic, number_of_categories):
+def make_class_prompt(topic, number_of_categories):
 
     prompt = "What are " + number_of_categories + "basic categories of" + topic + "knowledge that a university student studying " + topic + " should understand. Make them mutually exclusive and comprehensive."
     prompt += """
@@ -44,9 +44,34 @@ JSON
 """
     return prompt
 
+def make_transcription_prompt(video_summary, topic, length="1", level_of_detail="beginner"):
+    prompt = "below is the summary of all the content in a video related to "
+    prompt+=topic 
+    prompt+="\n based on this content, provide a transcription for a "
+    prompt+=length
+    prompt+=" minute podcast episode that covers this material"
+    prompt+=" and generate it at an appropriate level of detail for a "
+    prompt+=level_of_detail
+    prompt+="\n\n"
+    prompt+=video_summary
+    return prompt
+
+def generate_transcription(video_summary, topic, length="1", level_of_detail="beginner", model="gpt-4-0314"):
+
+    prompt = make_transcription_prompt(video_summary, topic, length, level_of_detail)
+
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[{"role": "user", "content": prompt}],
+    )
+
+    response_transcription = response["choices"][0]["message"]["content"]
+
+    return(response_transcription)
+
 def generate_classes(topic, number_of_categories="4", model="gpt-4-0314"):
 
-    prompt = make_prompt(topic, number_of_categories)
+    prompt = make_class_prompt(topic, number_of_categories)
 
     response = openai.ChatCompletion.create(
         model=model,
@@ -69,4 +94,6 @@ if __name__ == "__main__":
     number_of_categories = args.number_of_categories
     model = args.model
 
-    generate_classes(topic, number_of_categories, model)
+    classes_json = generate_classes(topic, number_of_categories, model)
+
+    print(classes_json)
