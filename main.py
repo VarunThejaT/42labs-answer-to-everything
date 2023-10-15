@@ -69,7 +69,7 @@ def main(config_file_name="leadership_config.json", language_override=None):
     with open(config_file_name, 'r') as f:
         data = json.load(f)
     # print(data)
-    payload = data['data']["heart_health"] #leadership should be an input argument
+    payload = data['data']["meditation"] #leadership should be an input argument
     topic = payload["topic_name"]
     index_id = payload["index_id"]
     selected_language = language_override if language_override else payload["language_preferences"]
@@ -112,7 +112,7 @@ def main(config_file_name="leadership_config.json", language_override=None):
 
 if __name__ == "__main__":
     for language in ["en", "ko"]:
-        for config in ["heart_health_config.json"]:
+        for config in ["meditation_config.json"]:
             print(f"generating audio for {config} in {language}..")
             audio_files = main(config, language)
             print(audio_files)
