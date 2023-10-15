@@ -5,6 +5,7 @@ import dotenv
 import json
 import requests
 from eleven import get_audio
+from elevenlabs import save
 from gpt import make_class_prompt, make_transcription_prompt, generate_transcription, generate_classes
 
 dotenv.load_dotenv()
@@ -71,8 +72,11 @@ def main():
     # classes_json = json.loads(classes_json)
     selected_subtopic = payload["selected_sub_topics"]
     list_of_audio_file_locations = []
+    used_videos = set()
     for sub_topic in selected_subtopic:
         relevant_videos = classify_videos(index_id, sub_topic)
+        relevant_videos = [video for video in relevant_videos if video["video_id"] not in used_videos]
+        used_videos.update([video["video_id"] for video in relevant_videos])
         if len(relevant_videos) == 0:
             continue
         video_summaries = []
@@ -87,11 +91,15 @@ def main():
         print(transcript)
 
         print("reading")
-        audio = get_audio([transcript])
-        # save the audio to local file
-        # host in s3 or locally and provide the end point in audio_file_location
-        audio_file_location = ""
+        audio = get_audio(transcript)
+        # save audio (mpeg) to mp3 file  
+        import hashlib
+        transcript_hash = hashlib.md5(transcript.encode('utf-8')).hexdigest()
+        audio_file_location = f"{topic}_{sub_topic}_{transcript_hash}.mp3"
+        list_of_audio_file_locations.append(audio_file_location)
+        save(audio, audio_file_location)
+
     return list_of_audio_file_locations
 
 if __name__ == "__main__":
-    main()
+    print(main())
