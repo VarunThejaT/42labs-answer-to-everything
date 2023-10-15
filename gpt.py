@@ -8,7 +8,7 @@ openai.Model.list()
 
 def make_class_prompt(topic, number_of_categories):
 
-    prompt = "What are " + number_of_categories + "basic categories of" + topic + "knowledge that a university student studying " + topic + " should understand. Make them mutually exclusive and comprehensive."
+    prompt = "What are " + number_of_categories + " categories of " + topic + " knowledge that a university student studying " + topic + " should understand. Make them mutually exclusive and comprehensive."
     prompt += """
 Provide a JSON output according to the following instructions. Include nothing else
 
@@ -69,7 +69,7 @@ def generate_transcription(video_summary, topic, length="1", level_of_detail="be
 
     return(response_transcription)
 
-def generate_classes(topic, number_of_categories="4", model="gpt-4-0314"):
+def generate_classes(topic, number_of_categories="5", model="gpt-4-0314"):
 
     prompt = make_class_prompt(topic, number_of_categories)
 
@@ -88,12 +88,19 @@ if __name__ == "__main__":
     parser.add_argument("--topic", type=str, default="machine learning", help="topic")
     parser.add_argument("--number_of_categories", type=str, default="4", help="number of categories")
     parser.add_argument("--model", type=str, default="gpt-4-0314", help="model")
+    parser.add_argument("--summary_file", type=str, default="summary.txt", help="summary file")
     args = parser.parse_args()
 
     topic = args.topic
     number_of_categories = args.number_of_categories
     model = args.model
+    summary_file = args.summary_file
+    summary = open(summary_file, "r").read()
 
-    classes_json = generate_classes(topic, number_of_categories, model)
+    # classes_json = generate_classes(topic, number_of_categories, model)
 
-    print(classes_json)
+    # print(classes_json)
+
+    transcript = generate_transcription(summary, topic, model=model)
+
+    print(transcript)
