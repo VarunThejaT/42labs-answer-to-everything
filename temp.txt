@@ -1,0 +1,6 @@
+{
+  "code": "parameter_invalid",
+  "message": "Request contains some invalid parameters. json: 
+  cannot unmarshal number into Go struct field CreateClassifyBulkRequest.threshold of type 
+  schema.ClassifyThreshold"
+}
