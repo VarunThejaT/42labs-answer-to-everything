@@ -96,12 +96,12 @@ def main():
         if(selected_language != "en"):
             transcript = GoogleTranslator(source='auto', target=selected_language).translate(transcript)  
 
-        print("reading")
+        print("generating audio")
         audio = get_audio(transcript)
         # save audio (mpeg) to mp3 file  
         import hashlib
         transcript_hash = hashlib.md5(transcript.encode('utf-8')).hexdigest()
-        audio_file_location = f"{topic}_{sub_topic}_{transcript_hash}.mp3"
+        audio_file_location = f"{topic}_{sub_topic}_{selected_language}_{transcript_hash}.mp3"
         list_of_audio_file_locations.append(audio_file_location)
         save(audio, audio_file_location)
 
