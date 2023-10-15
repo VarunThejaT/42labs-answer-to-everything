@@ -6,6 +6,7 @@ import json
 import requests
 from eleven import get_audio
 from gpt import make_class_prompt, make_transcription_prompt, generate_transcription, generate_classes
+from deep_translator import GoogleTranslator
 
 dotenv.load_dotenv()
 
@@ -62,6 +63,7 @@ def main():
     payload = data['data']["leadership"] #leadership should be an input argument
     topic = payload["topic_name"]
     index_id = payload["index_id"]
+    selected_language = payload["language_preferences"]
     number_of_categories = "5"
     level_of_detail = payload["skill_level"]
     length = "1"
@@ -85,6 +87,10 @@ def main():
 
         print("generated")
         print(transcript)
+
+        print("translating..")
+        if(selected_language != "en"):
+            transcript = GoogleTranslator(source='auto', target=selected_language).translate(transcript)  
 
         print("reading")
         audio = get_audio([transcript])
