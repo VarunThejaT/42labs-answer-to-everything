@@ -102,10 +102,10 @@ if __name__ == "__main__":
     summary_file = args.summary_file
     summary = open(summary_file, "r").read()
 
-    # classes_json = generate_classes(topic, number_of_categories, model)
+    classes_json = generate_classes(topic, number_of_categories, model)
 
-    # print(classes_json)
+    print(classes_json)
 
-    transcript = generate_transcription(summary, topic, model=model)
+    # transcript = generate_transcription(summary, topic, model=model)
 
-    print(transcript)
+    # print(transcript)
