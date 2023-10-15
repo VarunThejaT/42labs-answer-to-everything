@@ -44,16 +44,22 @@ JSON
 """
     return prompt
 
-def make_transcription_prompt(video_summary, topic, length="1", level_of_detail="beginner"):
+def make_transcription_prompt(video_summary, topic, name="David", length="1", level_of_detail="expert"):
     prompt = "below is the summary of all the content in a video related to "
     prompt+=topic 
     prompt+="\n based on this content, provide a transcription for a "
     prompt+=length
-    prompt+=" minute podcast episode that covers this material"
+    prompt+=" minute personal podcast episode for "
+    prompt+=name
+    prompt+=" that covers this material"
     prompt+=" and generate it at an appropriate level of detail for a "
     prompt+=level_of_detail
+    prompt+=". make sure to include the name "
+    prompt+=name
+    prompt+=" in the transcript. "
     prompt+="\n\n"
     prompt+=video_summary
+    prompt+=""
     return prompt
 
 def generate_transcription(video_summary, topic, length="1", level_of_detail="beginner", model="gpt-4-0314"):
@@ -85,8 +91,8 @@ def generate_classes(topic, number_of_categories="5", model="gpt-4-0314"):
 # call open ai api and get completion for the following prompt
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--topic", type=str, default="machine learning", help="topic")
-    parser.add_argument("--number_of_categories", type=str, default="4", help="number of categories")
+    parser.add_argument("--topic", type=str, default="leadership", help="topic")
+    parser.add_argument("--number_of_categories", type=str, default="5", help="number of categories")
     parser.add_argument("--model", type=str, default="gpt-4-0314", help="model")
     parser.add_argument("--summary_file", type=str, default="summary.txt", help="summary file")
     args = parser.parse_args()
