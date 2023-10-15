@@ -17,12 +17,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.Model.list()
 url = "https://api.twelvelabs.io/v1.1"
 API_KEY = os.getenv("TWELVE_LABS_API_KEY")
+API_KEY_2 = os.getenv("TWELVE_LABS_API_KEY_HEART_HEALTH")
 
 def get_video_index_api_key(topic):
     if topic in ["leadership", "meditation"]:
-        return os.getenv("TWELVE_LABS_API_KEY")
+        return API_KEY
     else:
-        return os.getenv("TWELVE_LABS_API_KEY_HEART_HEALTH")
+        return API_KEY_2
     
 def classify_videos(index_id, sub_topic, api_key):
     CLASSIFY_BULK_URL = f"{url}/classify/bulk"
