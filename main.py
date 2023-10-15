@@ -65,11 +65,11 @@ def summarize_video(video_id, api_key):
     chapter_summaries = [x["chapter_summary"] for x in response.json()["chapters"]]
     return chapter_summaries
 
-def main(config_file_name="leadership_config.json", language_override=None):
+def main(config_file_name="leadership_config.json", topic_name="meditation", language_override=None):
     with open(config_file_name, 'r') as f:
         data = json.load(f)
     # print(data)
-    payload = data['data']["meditation"] #leadership should be an input argument
+    payload = data['data'][topic_name] #leadership should be an input argument
     topic = payload["topic_name"]
     index_id = payload["index_id"]
     selected_language = language_override if language_override else payload["language_preferences"]
@@ -112,8 +112,9 @@ def main(config_file_name="leadership_config.json", language_override=None):
 
 if __name__ == "__main__":
     for language in ["en", "ko"]:
-        for config in ["meditation_config.json"]:
-            print(f"generating audio for {config} in {language}..")
-            audio_files = main(config, language)
-            print(audio_files)
+        print(f"generating audio for {language}..")
+        # meditation_audio_files = main("meditation_config.json", "meditation", language)
+        # leadership_audio_files = main("leadership_config.json", "leadership", language)
+        heart_health_audio_files = main("heart_health_config.json", "heart_health", language)
+
 
