@@ -18,7 +18,13 @@ openai.Model.list()
 url = "https://api.twelvelabs.io/v1.1"
 API_KEY = os.getenv("TWELVE_LABS_API_KEY")
 
-def classify_videos(index_id, sub_topic):
+def get_video_index_api_key(topic):
+    if topic in ["leadership", "meditation"]:
+        return os.getenv("TWELVE_LABS_API_KEY")
+    else:
+        return os.getenv("TWELVE_LABS_API_KEY_HEART_HEALTH")
+    
+def classify_videos(index_id, sub_topic, api_key):
     CLASSIFY_BULK_URL = f"{url}/classify/bulk"
 
     data =  {
@@ -32,7 +38,7 @@ def classify_videos(index_id, sub_topic):
     headers = {
         "accept": "application/json",
         "Content-Type": "application/json",
-        "x-api-key": API_KEY
+        "x-api-key": api_key
     }
 
     response = requests.post(CLASSIFY_BULK_URL, headers=headers, json=data)
@@ -40,14 +46,14 @@ def classify_videos(index_id, sub_topic):
     print(response.json())
     return response.json()["data"]
 
-def summarize_video(video_id):
+def summarize_video(video_id, api_key):
     payload = {
         "type": "chapter",
         "video_id": video_id,
     }
     headers = {
         "accept": "application/json",
-        "x-api-key": API_KEY,
+        "x-api-key": api_key,
         "Content-Type": "application/json"
     }
 
@@ -59,10 +65,10 @@ def summarize_video(video_id):
     return chapter_summaries
 
 def main(config_file_name="leadership_config.json", language_override=None):
-    with open('config.json', 'r') as f:
+    with open(config_file_name, 'r') as f:
         data = json.load(f)
     # print(data)
-    payload = data['data']["leadership"] #leadership should be an input argument
+    payload = data['data']["heart_health"] #leadership should be an input argument
     topic = payload["topic_name"]
     index_id = payload["index_id"]
     selected_language = language_override if language_override else payload["language_preferences"]
@@ -70,20 +76,20 @@ def main(config_file_name="leadership_config.json", language_override=None):
     level_of_detail = payload["skill_level"]
     length = "1"
     gpt_model = "gpt-4-0314"
+    video_api_key = get_video_index_api_key(topic)
     # get_12_summary(payload)
     # classes_json = generate_classes(topic, number_of_categories, gpt_model)
     # classes_json = json.loads(classes_json)
     selected_subtopic = payload["selected_sub_topics"]
     list_of_audio_file_locations = []
     for sub_topic in selected_subtopic:
-        relevant_videos = classify_videos(index_id, sub_topic)
+        relevant_videos = classify_videos(index_id, sub_topic, video_api_key)
         print(f"found {len(relevant_videos)} relevant videos for topic: {topic}, subtopic: {sub_topic}")
         if len(relevant_videos) == 0:
             continue
-        video_summaries = []
         for video in relevant_videos:
             video_id = video["video_id"]
-            video_summary = summarize_video(video_id)
+            video_summary = summarize_video(video_id, video_api_key)
             print(f"generating transcript for topic: {topic}, length: {length}, level of detail: {level_of_detail} for video: {video_id}")
             transcript = generate_transcription(",".join(video_summary), topic, length, level_of_detail)
 
@@ -105,7 +111,7 @@ def main(config_file_name="leadership_config.json", language_override=None):
 
 if __name__ == "__main__":
     for language in ["en", "ko"]:
-        for config in ["leadership_config.json", "heart_health_config.json", "meditation_config.json"]:
+        for config in ["heart_health_config.json"]:
             print(f"generating audio for {config} in {language}..")
             audio_files = main(config, language)
             print(audio_files)
